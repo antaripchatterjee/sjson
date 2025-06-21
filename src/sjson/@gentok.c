@@ -59,13 +59,13 @@ int sjson__gt_get_esc_seq_char_count(char esc_seq_char) {
     }
 }
 
-size_t sjson__gt_tokenize(const char* payload, struct sjson__token_t* token, char* error_message) {
+int sjson__gt_tokenize(const char* payload, struct sjson__token_t* token, char* error_message) {
     if(!payload || !token || !error_message) {
-        return 0UL;
+        return -1;
     }
     const char* reserved_keywords[] = SJSON__GT_RESERVED_KEYWORDS;
     const char valid_symbols[] = SJSON__GT_VALID_SYMBOLS;
-    size_t number_of_tokens = 0UL;
+    // size_t number_of_tokens = 0UL;
     // char error_message[SJSON__ERROR_MSG_SIZE+1] = { 0 };
 
     const long count_reserved_keywords = sizeof(reserved_keywords)/sizeof(char*);
@@ -256,11 +256,12 @@ size_t sjson__gt_tokenize(const char* payload, struct sjson__token_t* token, cha
             }
         } else {
             sjson__build_error_message(error_message, index, 
-                "Found invalid or unsupported control character '%s' (ASCII %d)\n", SJSON__GT_REPRCHAR(curr_char), curr_char);
+                "Found invalid or unsupported control character '%s' (ASCII %d)\n", 
+                SJSON__GT_REPRCHAR(curr_char), curr_char);
         }
         if(push_current_token) {
             current_token = sjson__gt_add_token(current_token, (const char*) token_buffer, --index, current_token_type);
-            number_of_tokens++;
+            // number_of_tokens++;
             memset(token_buffer, 0, sizeof(char) * (strlen(token_buffer) + 1));
             push_current_token = false;
             current_token_type = SJSON__T_TOKEN_UNKNOWN;
@@ -273,20 +274,21 @@ size_t sjson__gt_tokenize(const char* payload, struct sjson__token_t* token, cha
         sjson__build_error_message(error_message, strlen(payload)-1, "Invalid string literal, missing string ending character \"");
     }
     if(token_buffer) free(token_buffer);
-    return number_of_tokens;
+    return 0;
 }
 
-size_t sjson__gt_free_tokens(struct sjson__token_t* token) {
+int sjson__gt_free_tokens(struct sjson__token_t* token) {
+    if(!token) return -1;
     struct sjson__token_t* _next_token = token;
-    size_t number_of_tokens = 0UL;
+    // size_t number_of_tokens = 0UL;
     while(_next_token) {
         struct sjson__token_t* _temp_token = _next_token;
         _next_token = _next_token->next_token;
         if(_temp_token->token_buffer) {
             free(_temp_token->token_buffer);
-            number_of_tokens++;
+            // number_of_tokens++;
         }
         if(_temp_token != token) free(_temp_token);
     }
-    return number_of_tokens;
+    return 0;
 }

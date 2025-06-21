@@ -43,10 +43,10 @@ extern "C" {
 #endif // __cplusplus
 
 DLLEXPORT
-size_t sjson__gt_tokenize(const char* payload, struct sjson__token_t* token, char* error_message);
+int sjson__gt_tokenize(const char* payload, struct sjson__token_t* token, char* error_message);
 
 DLLEXPORT
-size_t sjson__gt_free_tokens(struct sjson__token_t* token);
+int sjson__gt_free_tokens(struct sjson__token_t* token);
 
 DLLEXPORT
 char* sjson__gt_append_character(char* buffer, char ch);
