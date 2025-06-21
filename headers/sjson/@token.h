@@ -2,17 +2,14 @@
 #define __SJSON_TOKEN_H__
 
 #include "../common.h"
-#include <stddef.h>
+#include "sjson/@context.h"
 
-enum sjson__tokentype_t {
+#include <stddef.h>
+#include <stdbool.h>
+
+typedef enum sjson__tokentype_t {
     SJSON__T_TOKEN_INVALID = -1,
     SJSON__T_TOKEN_UNKNOWN,
-    SJSON__T_WHITESPACE_SPACE,
-    SJSON__T_WHITESPACE_HORIZONTAL_TAB,
-    SJSON__T_WHITESPACE_VERTICAL_TAB, 
-    SJSON__T_WHITESPACE_FORM_FEED,
-    SJSON__T_WHITESPACE_CARRIAGE_RETURN,
-    SJSON__T_WHITESPACE_LINE_FEED,
     SJSON__T_OPERAND_STRING_VALUE,
     SJSON__T_OPERAND_DECIMAL_INTEGER,
     SJSON__T_OPERAND_DECIMAL_DOUBLE,
@@ -37,6 +34,39 @@ struct sjson__token_t {
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+DLLEXPORT
+bool sjson__is_boolean_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_null_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_string_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_number_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_value_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_array_start_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_array_end_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_object_start_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_object_end_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_comma_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+
+DLLEXPORT
+bool sjson__is_colon_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
 
 
 #ifdef __cplusplus
