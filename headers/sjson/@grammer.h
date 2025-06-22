@@ -6,7 +6,7 @@
 
 #include <stddef.h>
 
-typedef bool (*sjson__token_type_checker_t)(enum sjson__tokentype_t token_type);
+typedef bool (*sjson__token_type_checker_t)(enum sjson__tokentype_t, struct sjson__context_t);
 
 enum sjson__checkpoint_id_t {
     SJSON__CHECKPOINT_NONE = 0,
