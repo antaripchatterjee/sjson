@@ -1,5 +1,6 @@
 #include "sjson/main.h"
 #include "sjson/@gentok.h"
+#include "sjson/@grammer.h"
 #include <stdio.h>
 
 DLLEXPORT
@@ -12,12 +13,13 @@ int sjson__parse(const char* payload, char* error_message) {
         .next_token = NULL
     };
     int arg_err = sjson__gt_tokenize(payload, &tokens, error_message);
-    if(!arg_err && error_message[0] == '\0') {
-        struct sjson__token_t* t = &tokens;
-        do {
-            printf("token {%s} found at %zu with type id %d\n", t->token_buffer, t->pos, (int) t->token_type);
-            t = t->next_token;
-        } while (t && t->token_type != SJSON__T_TOKEN_UNKNOWN);
+    if(!arg_err && error_message && error_message[0] == '\0') {
+        arg_err = sjson__validate_grammer(&tokens, NULL, error_message);
+        if(!arg_err && error_message && error_message[0] == '\0') {
+            // Do something
+        } else {
+            puts(error_message);
+        }
     } else {
         puts(error_message);
     }

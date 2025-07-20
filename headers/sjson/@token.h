@@ -36,37 +36,37 @@ extern "C" {
 #endif // __cplusplus
 
 DLLEXPORT
-bool sjson__is_boolean_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_boolean_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_null_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_null_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_string_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_string_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_number_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_number_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_value_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_literal_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_array_start_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_array_start_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_array_end_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_array_end_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_object_start_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_object_start_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_object_end_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_object_end_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_comma_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_comma_token(enum sjson__tokentype_t token_type);
 
 DLLEXPORT
-bool sjson__is_colon_token(enum sjson__tokentype_t token_type, struct sjson__context_t *context);
+bool sjson__is_colon_token(enum sjson__tokentype_t token_type);
 
 
 #ifdef __cplusplus

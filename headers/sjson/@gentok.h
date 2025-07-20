@@ -2,7 +2,6 @@
 #define __SJSON_GENTOK_H__
 
 #include "../common.h"
-#include "sjson/@token.h"
 
 #include <stddef.h>
 

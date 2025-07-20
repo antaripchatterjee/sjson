@@ -1,7 +1,7 @@
 #include "sjson/main.h"
 #include <assert.h>
 #include <stdio.h>
-
+/*
 #define SAMPLE_JSON_DATA \
     "{\n" \
     "  \"id\": 12345,\n" \
@@ -31,8 +31,16 @@
     "    }\n" \
     "  ]\n" \
     "}"
+*/
 
-
+#define SAMPLE_JSON_DATA "{\n" \
+"  \"key1\": 123,\n" \
+"  \"key2\": {},\n" \
+"  \"key3\": {\n" \
+"    \"ckey1\": \"Hello\"\n" \
+"  },\n" \
+"  \"key4\": true\n" \
+"}"
 
 void test__sjson__parse() {
     printf("TEST STARTED [%s::%s:%d]\n", __FILE__, __FUNCTION__, __LINE__);

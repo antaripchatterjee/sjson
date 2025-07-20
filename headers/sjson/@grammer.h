@@ -3,35 +3,30 @@
 
 #include "../common.h"
 #include "sjson/@token.h"
+#include "sjson/@context.h"
 
-#include <stddef.h>
-
-typedef bool (*sjson__token_type_checker_t)(enum sjson__tokentype_t, struct sjson__context_t);
-
-enum sjson__checkpoint_id_t {
-    SJSON__CHECKPOINT_NONE = 0,
-    SJSON__CHECKPOINT_OBJECT_START,
-    SJSON__CHECKPOINT_OBJECT_END,
-    SJSON__CHECKPOINT_ARRAY_START,
-    SJSON__CHECKPOINT_ARRAY_END,
-    SJSON__CHECKPOINT_SET_KEYNAME,
-    SJSON__CHECKPOINT_KEY_VALUE_PAIR_END,
-    SJSON__CHECKPOINT_VALUE
-}; // enum sjson__checkpoint_id_t
-
-typedef struct _sjson__grammer_rule_t {
-    sjson__token_type_checker_t check_token_type_by;
-    struct _sjson__grammer_rule_t* next_rules;
-    const enum sjson__checkpoint_id_t checkpoint_id;
-    const enum sjson__checkpoint_id_t goto_checkpoint_id;
-} sjson__grammer_rule_t;
-
-extern sjson__grammer_rule_t sjson_rule;
+enum sjson__grammer_state {
+    SJSON__G_STATE_ERROR = -1,
+    SJSON__G_STATE_CTX_BEGIN,
+    SJSON__G_STATE_OBJ_BEGIN,
+    SJSON__G_STATE_ARR_BEGIN,
+    SJSON__G_STATE_KEYVAL_BEGIN,
+    SJSON__G_STATE_KEYVAL_SET,
+    SJSON__G_STATE_KEYVAL_END,
+    SJSON__G_STATE_KEY_BEGIN,
+    SJSON__G_STATE_VAL_BEGIN,
+    SJSON__G_STATE_VAL_END,
+    SJSON__G_STATE_KEY_END,
+    SJSON__G_STATE_ITEM_BEGIN,
+    SJSON__G_STATE_ITEM_END
+};
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
+DLLEXPORT
+int sjson__validate_grammer(struct sjson__token_t* tokens, struct sjson__context_t* context, char* error_message);
 
 #ifdef __cplusplus
 }
