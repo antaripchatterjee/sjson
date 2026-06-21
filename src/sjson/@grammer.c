@@ -3,14 +3,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-static size_t push_g_state(int* g_state_queue, size_t *len, size_t *cap, int g_state) {
+static int* push_g_state(int* g_state_queue, size_t *len, size_t *cap, int g_state) {
     if(*len == * cap) {
-        g_state_queue = (int*) realloc(g_state_queue, sizeof(int) * ((*cap) + 512));
-        if(!g_state_queue) {
+        int* g_state_queue_temp = (int*) realloc(g_state_queue, sizeof(int) * ((*cap) + 512));
+        if(!g_state_queue_temp) {
             *len = 0;
             *cap = 0;
+            free(g_state_queue);
+            g_state_queue = NULL;
         } else {
-            memset(g_state_queue + ((*cap) * sizeof(int)), 0, 512 * sizeof(int));
+            g_state_queue = g_state_queue_temp;
+            memset(g_state_queue + *cap, 0, 512 * sizeof(int));
             *cap += 512;
         }
     }
@@ -18,7 +21,7 @@ static size_t push_g_state(int* g_state_queue, size_t *len, size_t *cap, int g_s
         g_state_queue[*len] = g_state;
         *len = *len + 1;
     }
-    return *len;
+    return g_state_queue;
 }
 
 
@@ -51,7 +54,7 @@ int sjson__validate_grammer(struct sjson__token_t* tokens, struct sjson__context
                 // set error message
                 g_state = SJSON__G_STATE_ERROR;
             }
-            if(!push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, g_state)) {
+            if(g_state != SJSON__G_STATE_ERROR && (g_state_queue = push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, g_state)) == NULL) {
                 // set error message
                 g_state = SJSON__G_STATE_ERROR;
             }
@@ -84,12 +87,12 @@ int sjson__validate_grammer(struct sjson__token_t* tokens, struct sjson__context
             if(sjson__is_literal_token(token->token_type)) {
                 g_state = SJSON__G_STATE_KEYVAL_END;
             } else if (sjson__is_object_start_token(token->token_type)) {
-                if(!push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, SJSON__G_STATE_KEYVAL_END)) {
+                if((g_state_queue = push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, SJSON__G_STATE_KEYVAL_END)) == NULL) {
                     // set the error
                     g_state = SJSON__G_STATE_ERROR;
                 } else {
                     g_state = SJSON__G_STATE_OBJ_BEGIN;
-                    if(!push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, g_state)) {
+                    if((g_state_queue = push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, g_state)) == NULL) {
                         // set the error
                         g_state = SJSON__G_STATE_ERROR;
                     }
@@ -102,7 +105,7 @@ int sjson__validate_grammer(struct sjson__token_t* tokens, struct sjson__context
             break;
             case SJSON__G_STATE_KEYVAL_END:
             if(sjson__is_comma_token(token->token_type)) {
-                if(!push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, g_state)) {
+                if((g_state_queue = push_g_state(g_state_queue, &g_state_queue_len, &g_state_queue_cap, g_state)) == NULL) {
                     // set the error
                     g_state = SJSON__G_STATE_ERROR;
                 } else {

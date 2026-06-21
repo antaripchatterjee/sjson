@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef enum sjson__tokentype_t {
+enum sjson__tokentype_t {
     SJSON__T_TOKEN_INVALID = -1,
     SJSON__T_TOKEN_UNKNOWN,
     SJSON__T_OPERAND_STRING_VALUE,

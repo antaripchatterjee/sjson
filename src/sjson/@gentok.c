@@ -1,3 +1,4 @@
+#include "sjson/@token.h"
 #include "sjson/@gentok.h"
 #include "sjson/@error.h"
 
